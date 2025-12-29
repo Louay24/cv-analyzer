@@ -26,7 +26,11 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 
+RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
+
 EXPOSE 3001
+
+USER nestjs
 
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
 
