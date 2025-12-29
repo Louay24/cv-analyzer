@@ -1,5 +1,5 @@
 services:
-  - type: pg
+  - type: postgres
     name: cv-analyzer-db
     plan: free
     databaseName: cv_analyzer
