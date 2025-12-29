@@ -1,10 +1,10 @@
-services:
-  - type: postgres
-    name: cv-analyzer-db
-    plan: free
+databases:
+  - name: cv-analyzer-db
     databaseName: cv_analyzer
     user: postgres
+    plan: free
 
+services:
   - type: web
     name: cv-analyzer-backend
     env: docker
