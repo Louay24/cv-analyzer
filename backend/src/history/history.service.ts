@@ -2,6 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { HistoryResponseDto, HistoryItem } from './dto/history-response.dto';
 import { AnalysisResult } from '../analyze/dto/analyze-response.dto';
+import { Prisma } from '@prisma/client';
+
+type UserSessionWithAnalyses = Prisma.UserSessionGetPayload<{
+  include: {
+    analyses: true;
+  };
+}>;
+
+type AnalysisFromQuery = UserSessionWithAnalyses['analyses'][number];
 
 @Injectable()
 export class HistoryService {
@@ -21,7 +30,8 @@ export class HistoryService {
       return { analyses: [] };
     }
 
-    const analyses: HistoryItem[] = userSession.analyses.map((analysis) => ({
+    const typedSession = userSession as UserSessionWithAnalyses;
+    const analyses: HistoryItem[] = typedSession.analyses.map((analysis: AnalysisFromQuery) => ({
       id: analysis.id,
       result: analysis.result as unknown as AnalysisResult,
       jobDescription: analysis.jobDescription,
