@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserSession {
+  id          String     @id @default(uuid())
+  browserId   String     @unique
+  cvText      String?    @db.Text
+  cvFilePath  String?
+  cvFileName  String?
+  cvMimeType  String?
+  createdAt   DateTime   @default(now())
+  analyses    Analysis[]
+}
+
+model Analysis {
+  id             String      @id @default(uuid())
+  userSessionId String
+  cvText         String      @db.Text
+  cvFilePath     String?
+  cvFileName     String?
+  cvMimeType     String?
+  jobDescription String      @db.Text
+  result         Json
+  createdAt      DateTime    @default(now())
+  userSession    UserSession @relation(fields: [userSessionId], references: [id], onDelete: Cascade)
+
+  @@index([userSessionId])
+}
+
