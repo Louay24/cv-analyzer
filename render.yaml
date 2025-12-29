@@ -21,10 +21,7 @@ services:
           name: cv-analyzer-db
           property: connectionString
       - key: FRONTEND_URL
-        fromService:
-          name: cv-analyzer-frontend
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
       - key: CLOUDINARY_URL
@@ -40,8 +37,5 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: cv-analyzer-backend
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
+        sync: false
 
