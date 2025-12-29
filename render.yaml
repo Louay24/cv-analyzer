@@ -1,7 +1,7 @@
 databases:
   - name: cv-analyzer-db
     databaseName: cv_analyzer
-    user: postgres
+    user: cv_analyzer_user
     plan: free
 
 services:
