@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import { API_BASE_URL } from '@/lib/env';
 
 interface CVTabProps {
@@ -27,10 +28,13 @@ export function CVTab({ analysisId, cvMimeType, cvFilePath, cvFileName, cvText }
             />
           ) : cvMimeType.startsWith('image/') ? (
             <div className="flex justify-center">
-              <img
+              <Image
                 src={cvFilePath || `${API_BASE_URL}/upload/file/${id}`}
                 alt={cvFileName || 'CV'}
+                width={800}
+                height={1000}
                 className="max-w-full h-auto rounded"
+                unoptimized
               />
             </div>
           ) : (

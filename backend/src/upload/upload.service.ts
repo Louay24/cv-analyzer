@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CloudinaryService } from './cloudinary.service';
 import { FileUpload } from './interfaces/file-upload.interface';
-import * as pdfParse from 'pdf-parse';
+import pdfParse from 'pdf-parse';
 import { createWorker } from 'tesseract.js';
 
 @Injectable()

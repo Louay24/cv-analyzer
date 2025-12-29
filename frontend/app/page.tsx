@@ -39,7 +39,7 @@ export default function HomePage(): JSX.Element {
     try {
       const response = await uploadMutation.mutateAsync({ file, browserId });
       dispatch({ type: 'UPLOAD_SUCCESS', payload: response.cvText });
-    } catch (error) {
+    } catch {
       dispatch({ type: 'UPLOAD_FAILED' });
     }
   };
@@ -59,7 +59,7 @@ export default function HomePage(): JSX.Element {
         browserId,
       });
       router.push(`/results/${response.id}`);
-    } catch (error) {
+    } catch {
       dispatch({ type: 'SET_STEP', payload: 'jobDescription' });
     }
   };
@@ -68,7 +68,7 @@ export default function HomePage(): JSX.Element {
     dispatch({ type: 'SET_STEP', payload: 'upload' });
   };
 
-  const handleJobSampleSelect = (title: string, description: string): void => {
+  const handleJobSampleSelect = (title: string, _description: string): void => {
     dispatch({ type: 'SET_JOB_SAMPLE', payload: title });
   };
 

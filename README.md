@@ -34,3 +34,5 @@ npm run dev
 - **Frontend**: Next.js, TypeScript, Tailwind CSS, shadcn/ui, Zustand
 - **Backend**: NestJS, PostgreSQL, Prisma, Mastra AI, Tesseract.js
 
+
+

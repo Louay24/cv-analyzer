@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import { API_BASE_URL } from './env';
 
 export interface UploadResponse {
@@ -46,66 +47,85 @@ export interface HistoryResponse {
   analyses: HistoryItem[];
 }
 
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+});
+
 export async function uploadCV(file: File, browserId: string): Promise<UploadResponse> {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(`${API_BASE_URL}/upload`, {
-    method: 'POST',
-    headers: {
-      'x-browser-id': browserId,
-    },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'Failed to upload CV' }));
-    throw new Error(errorData.message || 'Failed to upload CV');
+  try {
+    const response = await apiClient.post<UploadResponse>('/upload', formData, {
+      headers: {
+        'x-browser-id': browserId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to upload CV';
+      throw new Error(message);
+    }
+    throw new Error('Failed to upload CV');
   }
-
-  return response.json() as Promise<UploadResponse>;
 }
 
 export async function analyzeCV(
   request: AnalyzeRequest,
   browserId: string,
 ): Promise<AnalyzeResponse> {
-  const response = await fetch(`${API_BASE_URL}/analyze`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-browser-id': browserId,
-    },
-    body: JSON.stringify(request),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'Failed to analyze CV' }));
-    throw new Error(errorData.message || 'Failed to analyze CV');
+  try {
+    const response = await apiClient.post<AnalyzeResponse>('/analyze', request, {
+      headers: {
+        'x-browser-id': browserId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to analyze CV';
+      throw new Error(message);
+    }
+    throw new Error('Failed to analyze CV');
   }
-
-  return response.json() as Promise<AnalyzeResponse>;
 }
 
 export async function getAnalysisById(id: string): Promise<AnalyzeResponse> {
-  const response = await fetch(`${API_BASE_URL}/analyze/${id}`);
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'Failed to fetch analysis' }));
-    throw new Error(errorData.message || 'Failed to fetch analysis');
+  try {
+    const response = await apiClient.get<AnalyzeResponse>(`/analyze/${id}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to fetch analysis';
+      throw new Error(message);
+    }
+    throw new Error('Failed to fetch analysis');
   }
-
-  return response.json() as Promise<AnalyzeResponse>;
 }
 
 export async function getHistory(browserId: string): Promise<HistoryResponse> {
-  const response = await fetch(`${API_BASE_URL}/analysis/history?browserId=${browserId}`);
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'Failed to fetch history' }));
-    throw new Error(errorData.message || 'Failed to fetch history');
+  try {
+    const response = await apiClient.get<HistoryResponse>('/analysis/history', {
+      params: {
+        browserId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to fetch history';
+      throw new Error(message);
+    }
+    throw new Error('Failed to fetch history');
   }
-
-  return response.json() as Promise<HistoryResponse>;
 }
 

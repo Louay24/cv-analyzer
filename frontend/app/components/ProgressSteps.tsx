@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 type Step = 'upload' | 'jobDescription' | 'analyzing';
@@ -18,8 +19,8 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps): JSX.E
     <div className="mb-8">
       <div className="flex items-center w-full">
         {steps.map((step, index) => (
-          <>
-            <div key={step.id} className="flex flex-col items-center flex-1">
+          <Fragment key={step.id}>
+            <div className="flex flex-col items-center flex-1">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors ${
                   currentStep === step.id
@@ -50,10 +51,12 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps): JSX.E
                 }`}
               />
             )}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
   );
 }
+
+
 
