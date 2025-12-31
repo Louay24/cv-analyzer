@@ -1,4 +1,4 @@
-FROM node:20.18.0-alpine AS base
+FROM node:20-slim AS base
 
 WORKDIR /app
 
@@ -20,6 +20,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /app/.env .env
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
@@ -28,4 +30,4 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3001
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
