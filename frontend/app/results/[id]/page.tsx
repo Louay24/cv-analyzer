@@ -1,6 +1,5 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { useAnalysis } from '@/hooks/useAnalysis';
 import { LoadingState } from './components/LoadingState';
 import { ResultsHeader } from './components/ResultsHeader';
@@ -8,14 +7,9 @@ import { MatchRateCard } from './components/MatchRateCard';
 import { ResultsTabs } from './components/ResultsTabs';
 
 export default function ResultsPage(): JSX.Element {
-  const params = useParams();
   const {
     analysis,
     jobDescription,
-    cvText,
-    cvFilePath,
-    cvFileName,
-    cvMimeType,
     matchRate,
     activeTab,
     setActiveTab,
@@ -24,8 +18,6 @@ export default function ResultsPage(): JSX.Element {
   if (!analysis) {
     return <LoadingState />;
   }
-
-  const analysisId = (params.id as string) || '';
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -43,11 +35,6 @@ export default function ResultsPage(): JSX.Element {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 analysis={analysis}
-                analysisId={analysisId}
-                cvMimeType={cvMimeType}
-                cvFilePath={cvFilePath}
-                cvFileName={cvFileName}
-                cvText={cvText}
                 jobDescription={jobDescription}
               />
             </div>

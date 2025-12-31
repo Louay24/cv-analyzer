@@ -15,8 +15,8 @@ interface UseAnalysisReturn {
   cvFileName: string | null;
   cvMimeType: string | null;
   matchRate: number;
-  activeTab: 'report' | 'job' | 'cv';
-  setActiveTab: (tab: 'report' | 'job' | 'cv') => void;
+  activeTab: 'report' | 'job';
+  setActiveTab: (tab: 'report' | 'job') => void;
 }
 
 export function useAnalysis(): UseAnalysisReturn {
@@ -24,7 +24,7 @@ export function useAnalysis(): UseAnalysisReturn {
   const { setLoading, setError } = useStore();
   const analysisId = (params.id as string) || null;
   const { data, isLoading, error: queryError } = useAnalysisQuery(analysisId);
-  const [activeTab, setActiveTab] = useState<'report' | 'job' | 'cv'>('report');
+  const [activeTab, setActiveTab] = useState<'report' | 'job'>('report');
   
   const matchRate = useMatchRateAnimation(data?.result || null);
 
