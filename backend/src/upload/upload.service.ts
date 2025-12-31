@@ -3,7 +3,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CloudinaryService } from './cloudinary.service';
 import { FileUpload } from './interfaces/file-upload.interface';
 import pdfParse from 'pdf-parse';
-import { createWorker } from 'tesseract.js';
 
 @Injectable()
 export class UploadService {
@@ -60,17 +59,13 @@ export class UploadService {
       if (data.text && data.text.trim().length > 0) {
         return data.text;
       }
-      return this.extractFromImage(buffer);
+      throw new BadRequestException('PDF appears to be a scanned document or image-based PDF. Text extraction failed. Please upload a text-based PDF.');
     } catch (error) {
-      return this.extractFromImage(buffer);
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException(`Failed to extract text from PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-  }
-
-  private async extractFromImage(buffer: Buffer): Promise<string> {
-    const worker = await createWorker('eng');
-    const { data } = await worker.recognize(buffer);
-    await worker.terminate();
-    return data.text;
   }
 }
 
