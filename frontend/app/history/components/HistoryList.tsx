@@ -24,3 +24,8 @@ export function HistoryList({ analyses }: HistoryListProps): JSX.Element {
 
 
 
+
+
+
+
+

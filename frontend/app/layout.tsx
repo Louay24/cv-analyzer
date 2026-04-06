@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Providers } from '@/lib/providers';
+import { ClientLayout } from './ClientLayout';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'CV Analyzer',
@@ -17,10 +14,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Providers>{children}</Providers>
-      </body>
+      <ClientLayout>{children}</ClientLayout>
     </html>
   );
 }
-

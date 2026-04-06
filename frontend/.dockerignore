@@ -1,3 +1,4 @@
+package-lock.json
 node_modules
 .next
 .env
@@ -16,6 +17,11 @@ coverage
 *.swp
 *.swo
 *~
+
+
+
+
+
 
 
 

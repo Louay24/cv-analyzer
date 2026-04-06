@@ -1,11 +1,16 @@
+# syntax=docker/dockerfile:1
+
 FROM node:20-slim AS base
 
 WORKDIR /app
 
 FROM base AS deps
+ENV PNPM_FETCH_RETRIES=15
+ENV PNPM_FETCH_TIMEOUT=600000
 RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 FROM base AS builder
 WORKDIR /app
